@@ -1,0 +1,25 @@
+{
+  "name": "webpack-async-define",
+  "version": "0.0.1",
+  "description": "A webpack plugin for async-define",
+  "main": "index.js",
+  "scripts": {
+    "release:major": "./node_modules/.bin/npm-release major",
+    "release:minor": "./node_modules/.bin/npm-release minor",
+    "release:patch": "./node_modules/.bin/npm-release patch"
+  },
+  "repository": "git@github.com:tes/webpack-async-define.git",
+  "author": "Maurizio Lupo <maurizio.lupo@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "npm-release": "^1.0.0"
+  },
+  "dependencies": {
+    "async-define": "^3.0.4",
+    "webpack-core": "^0.6.8"
+  },
+  "keywords": [
+    "webpack",
+    "plugin"
+  ]
+}
