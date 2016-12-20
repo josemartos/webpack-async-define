@@ -27,8 +27,8 @@ function apply(compiler) {
   });
 
   function wrapFile(compilation, fileName) {
-    var headerContent = (typeof header === 'function') ? header(fileName) : header;
-    var footerContent = (typeof footer === 'function') ? footer(fileName) : footer;
+    var headerContent = header;
+    var footerContent = footer;
 
     compilation.assets[fileName] = new ConcatSource(
         String(headerContent),
