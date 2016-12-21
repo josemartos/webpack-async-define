@@ -1,6 +1,7 @@
 'use strict';
 
 var ConcatSource = require('webpack-core/lib/ConcatSource');
+var ModuleFilenameHelpers = require('webpack/lib/ModuleFilenameHelpers');
 var path = require('path');
 var fs = require('fs');
 var adPath = require.resolve('async-define');
@@ -10,37 +11,45 @@ var header = adTemplateFragments[0];
 var footer = adTemplateFragments[1];
 
 function WrapperPlugin() {
-
-  this.header = header;
-  this.footer = footer;
 }
 
 function apply(compiler) {
-  var header = this.header;
-  var footer = this.footer;
+  var options = compiler.options;
+	options.test = options.test || /\.js($|\?)/i;
+
+  options.output.libraryTarget = 'amd'; // the plugin is compatible with amd only
 
   compiler.plugin('compilation', function (compilation) {
     compilation.plugin('optimize-chunk-assets', function (chunks, done) {
-      wrapChunks(compilation, chunks, footer, header);
+      wrapChunks(compilation, chunks);
       done();
     })
   });
 
   function wrapFile(compilation, fileName) {
-    var headerContent = header;
-    var footerContent = footer;
+    console.log('FileName', fileName);
 
     compilation.assets[fileName] = new ConcatSource(
-        String(headerContent),
+        header,
         compilation.assets[fileName],
-        String(footerContent));
+        footer);
   }
 
   function wrapChunks(compilation, chunks) {
-    chunks.forEach(function (chunk) {
-      chunk.files.forEach(function (fileName) {
-        wrapFile(compilation, fileName);
+    var files = [];
+    chunks.forEach(function(chunk) {
+      chunk.files.forEach(function(file) {
+        files.push(file);
       });
+    });
+    compilation.additionalChunkAssets.forEach(function(file) {
+      files.push(file);
+    });
+    files = files.filter(ModuleFilenameHelpers.matchObject.bind(undefined, options));
+
+    files.forEach(function (fileName) {
+
+      wrapFile(compilation, fileName);
     });
   }
 }
