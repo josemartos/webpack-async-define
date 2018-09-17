@@ -19,12 +19,26 @@ function apply(compiler) {
 
   options.output.libraryTarget = 'amd'; // the plugin is compatible with amd only
 
-  compiler.plugin('compilation', function (compilation) {
-    compilation.plugin('optimize-chunk-assets', function (chunks, done) {
+  if (compiler.hooks) {
+    const plugin = { name: 'WPAsyncDefine' };
+    compiler.hooks.compilation.tap(plugin, function (compilation) {
+      compilation.hooks.optimizeChunkAssets.tap(plugin, onOptimizeChunkAssets(compilation));
+    });
+  } else {
+    compiler.plugin('compilation', function (compilation) {
+      compilation.plugin('optimize-chunk-assets', onOptimizeChunkAssets(compilation))
+    });
+  }
+
+  function onOptimizeChunkAssets(compilation) {
+    function optimizeChunkAssets (chunks, done) {
       wrapChunks(compilation, chunks);
-      done();
-    })
-  });
+      if (done) {
+        done();
+      }
+    }
+    return optimizeChunkAssets;
+  }
 
   function wrapFile(compilation, fileName) {
     console.log('FileName', fileName);
