@@ -11,9 +11,7 @@
   "repository": "git@github.com:tes/webpack-async-define.git",
   "author": "Maurizio Lupo <maurizio.lupo@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "npm-release": "^1.0.0"
-  },
+  "devDependencies": {},
   "dependencies": {
     "async-define": "^3.2.1",
     "webpack": "^2.1.0-beta.25",
