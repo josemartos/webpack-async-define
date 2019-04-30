@@ -9,8 +9,7 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "async-define": "^3.2.2",
-    "handlebars": "^4.1.0",
+    "async-define": "^3.2.4",
     "webpack": "^4.29.0",
     "webpack-core": "^0.6.9"
   },
